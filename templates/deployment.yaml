@@ -3,18 +3,42 @@ kind: Deployment
 metadata:
   name: {{ include "demo-nginx-chart.fullname" . }}
   labels:
-    app: nginx
+  {{- range .Values.labels }}
+    {{ .key }}: {{ .value }}
+  {{- end }}
 spec:
   replicas: {{ .Values.replicaCount}}
   selector:
     matchLabels:
-      app: nginx
+    {{- range .Values.labels }}
+      {{ .key }}: {{ .value }}
+    {{- end }}
   template:
     metadata:
       labels:
-        app: nginx
+      {{- range .Values.labels }}
+        {{ .key }}: {{ .value }}
+      {{- end }}
     spec:
       containers:
-        - name: {{ .Chart.Name}}
+        - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: test1
+              mountPath: /test1
+            - name: secrets
+              mountPath: /test2/secret.txt
+              subPath: secret.txt
+      volumes:
+      - name: test1
+        configMap:
+          name: demo-configmap
+          items:
+            - key: configmap1.txt
+              path: configmap1.txt
+      - name: secrets
+        secret:
+          secretName: secret-data
+
+
