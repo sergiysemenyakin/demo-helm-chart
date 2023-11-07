@@ -5,12 +5,12 @@
 replicaCount: 2
 
 labels:
-  - key: environment
-    value: demo
-  - key: service-type
-    value: frontend
-  - key: app
-    value: nginx
+- key: environment
+  value: demo
+- key: service-type
+  value: frontend
+- key: app
+  value: nginx
 
 secrets:
   secret1: c2VjcmUx
@@ -25,5 +25,5 @@ service:
   type: ClusterIP
   port: 80
 
-afiniti:
+affinity:
   enabled: false

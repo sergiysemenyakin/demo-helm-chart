@@ -40,7 +40,7 @@ spec:
         secret:
           secretName: secret-data
           defaultMode: 0400
-      {{- if .Values.afiniti.enabled }}
+      {{- if .Values.affiniti.enabled }}
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
