@@ -28,8 +28,7 @@ spec:
             - name: test1
               mountPath: /test1
             - name: secrets
-              mountPath: /test2/secret.txt
-              subPath: secret.txt
+              mountPath: "/test2/secrets"
       volumes:
       - name: test1
         configMap:
@@ -40,5 +39,17 @@ spec:
       - name: secrets
         secret:
           secretName: secret-data
+          defaultMode: 0400
+      {{- if .Values.afiniti.enabled }}
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: node-label
+                operator: In
+                values:
+                - node-label
+      {{- end }}
 
 
